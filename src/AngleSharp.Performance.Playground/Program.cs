@@ -17,13 +17,15 @@ namespace AngleSharp.Performance.Playground
 
 			for ( int i = 0; i < 1000; i++ )
 			{
-				IHtmlDocument document = parser.ParseDocument( TestData.TorrentSite );
-				foreach ( IElement link in document.Links )
+				using ( IHtmlDocument document = parser.ParseDocument( TestData.TorrentSite ) )
 				{
-				}
+					foreach ( IElement link in document.Links )
+					{
+					}
 
-				foreach ( IHtmlScriptElement script in document.Scripts )
-				{
+					foreach ( IHtmlScriptElement script in document.Scripts )
+					{
+					}
 				}
 			}
 		}

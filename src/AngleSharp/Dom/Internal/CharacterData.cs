@@ -245,6 +245,12 @@
             this.RemoveFromParent();
         }
 
-        #endregion
-    }
+		public override void Dispose()
+		{
+			_content.Builder?.ToPoolWithoutReturn();
+			base.Dispose();
+		}
+
+		#endregion
+	}
 }

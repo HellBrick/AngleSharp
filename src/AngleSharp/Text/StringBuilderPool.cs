@@ -22,7 +22,7 @@
             {
                 if (_builder.Count == 0)
                 {
-                    return new StringBuilder(1024);
+                    return new StringBuilder();
                 }
 
                 return _builder.Pop().Clear();
@@ -46,5 +46,13 @@
 
             return result;
         }
-    }
+
+		public static void ToPoolWithoutReturn( this StringBuilder sb )
+		{
+			lock ( _lock )
+			{
+				_builder.Push( sb );
+			}
+		}
+	}
 }

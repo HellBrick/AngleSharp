@@ -1,14 +1,15 @@
 ﻿namespace AngleSharp.Dom
 {
-    using AngleSharp.Text;
-    using System;
-    using System.IO;
-    using System.Runtime.CompilerServices;
+	using AngleSharp.Text;
+	using System;
+	using System.IO;
+	using System.Runtime.CompilerServices;
+	using System.Linq;
 
-    /// <summary>
-    /// Represents a node in the generated tree.
-    /// </summary>
-    abstract class Node : EventTarget, INode, IEquatable<INode>
+	/// <summary>
+	/// Represents a node in the generated tree.
+	/// </summary>
+	abstract class Node : EventTarget, INode, IEquatable<INode>, IDisposable
     {
         #region Fields
 
@@ -677,6 +678,7 @@
 
             RemoveNode(index, node);
             NodeIsRemoved(node, oldPreviousSibling);
+			node.Dispose();
         }
 
         internal INode ReplaceChild(Node node, Node child, Boolean suppressObservers)
@@ -794,6 +796,12 @@
             }
         }
 
-        #endregion
-    }
+		public virtual void Dispose()
+		{
+			foreach ( var child in _children.OfType<IDisposable>() )
+				child.Dispose();
+		}
+
+		#endregion
+	}
 }
