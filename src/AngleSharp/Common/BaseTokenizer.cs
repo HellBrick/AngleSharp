@@ -105,6 +105,13 @@
             return content;
         }
 
+        internal LazyString CaptureBuffer()
+        {
+            var lazyString = new LazyString(StringBuffer);
+            StringBuffer = StringBuilderPool.Obtain();
+            return lazyString;
+        }
+
         /// <summary>
         /// Disposes the tokenizer by releasing the buffer.
         /// </summary>
