@@ -8,7 +8,7 @@
     /// <summary>
     /// Represents a node in the generated tree.
     /// </summary>
-    abstract class Node : EventTarget, INode, IEquatable<INode>
+    abstract class Node : EventTarget, INode, IEquatable<INode>, IDisposable
     {
         #region Fields
 
@@ -792,6 +792,18 @@
             }
         }
 
-        #endregion
-    }
+		#endregion
+
+		public virtual void Dispose()
+		{
+			for ( int i = 0; i < _children.Length; i++ )
+			{
+				_children[ i ].Dispose();
+			}
+
+			DisposeSelf();
+		}
+
+		protected virtual void DisposeSelf() { }
+	}
 }

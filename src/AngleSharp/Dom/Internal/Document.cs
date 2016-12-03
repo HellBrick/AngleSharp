@@ -872,8 +872,9 @@
 
         #region Methods
 
-        public void Dispose()
+        public override void Dispose()
         {
+			base.Dispose();
             //Important to fix #45
             ReplaceAll(null, true);
             _loop.CancelAll();
