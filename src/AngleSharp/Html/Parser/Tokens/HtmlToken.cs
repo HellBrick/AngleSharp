@@ -13,7 +13,7 @@
 
         private readonly HtmlTokenType _type;
         private readonly TextPosition _position;
-        private String _name;
+        private LazyString _name;
 
         #endregion
 
@@ -25,6 +25,11 @@
         }
 
         public HtmlToken(HtmlTokenType type, TextPosition position, String name)
+            : this(type, position, new LazyString(name))
+        {
+        }
+
+        public HtmlToken(HtmlTokenType type, TextPosition position, LazyString name)
         {
             _type = type;
             _position = position;
@@ -41,7 +46,7 @@
         /// <returns>True if the character data is actually NULL or empty.</returns>
         public Boolean IsEmpty
         {
-            get { return String.IsNullOrEmpty(_name); }
+            get { return _name.IsNullOrEmpty; }
         }
 
         /// <summary>
@@ -67,10 +72,19 @@
         /// <summary>
         /// Gets or sets the name of a tag token.
         /// </summary>
-        public String Name
+        public LazyString LazyName
         {
             get { return _name; }
             set { _name = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of a tag token.
+        /// </summary>
+        public String Name
+        {
+            get { return (_name = _name.EnsureValue()).Value; }
+            set { _name = new LazyString(value); }
         }
 
         /// <summary>
@@ -78,7 +92,7 @@
         /// </summary>
         public String Data
         {
-            get { return _name; }
+            get { return Name; }
         }
 
         /// <summary>
@@ -142,8 +156,8 @@
             }
 
             var t = _name.Substring(0, i);
-            _name = _name.Substring(i);
-            return t;
+            _name = _name.Remove(0 ,i);
+            return t.EnsureValue().Value;
         }
 
         /// <summary>
@@ -151,9 +165,9 @@
         /// </summary>
         public void RemoveNewLine()
         {
-            if (_name.Has(Symbols.LineFeed))
+            if (_name.Length > 0 && Name[0] == Symbols.LineFeed)
             {
-                _name = _name.Substring(1);
+                _name = _name.Remove(0, 1);
             }
         }
 
@@ -173,7 +187,7 @@
         /// <returns>True if the token is indeed a start tag token with the given name, otherwise false.</returns>
         public Boolean IsStartTag(String name)
         {
-            return _type == HtmlTokenType.StartTag && _name.Is(name);
+            return _type == HtmlTokenType.StartTag && _name == name;
         }
 
         #endregion
