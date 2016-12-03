@@ -14,7 +14,7 @@
     /// </summary>
     static class HtmlDomBuilderExtensions
     {
-        public static void SetAttributes(this Element element, List<KeyValuePair<String, String>> attributes)
+        public static void SetAttributes(this Element element, List<KeyValuePair<LazyString, LazyString>> attributes)
         {
             var container = element.Attributes;
 
@@ -91,7 +91,7 @@
             return (Int32)code;
         }
 
-        public static void SetUniqueAttributes(this Element element, List<KeyValuePair<String, String>> attributes)
+        public static void SetUniqueAttributes(this Element element, List<KeyValuePair<LazyString, LazyString>> attributes)
         {
             for (var i = attributes.Count - 1; i >= 0; i--)
             {

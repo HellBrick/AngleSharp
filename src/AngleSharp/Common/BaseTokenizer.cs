@@ -94,6 +94,19 @@
 
         #region Methods
 
+		internal LazyString FlushBufferToLazy()
+		{
+			var length = StringBuffer.Length;
+			var buffer = CharBufferPool.Rent( length );
+			for ( int i = 0; i < StringBuffer.Length; i++ )
+			{
+				buffer[ i ] = StringBuffer[ i ];
+			}
+
+			StringBuffer.Clear();
+			return new LazyString( new PooledString( buffer, length ) );
+		}
+
         /// <summary>
         /// Flushes the buffer.
         /// </summary>

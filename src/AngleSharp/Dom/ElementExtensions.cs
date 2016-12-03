@@ -1567,7 +1567,7 @@
         /// <param name="suppressCallbacks">Flag to suppress callbacks.</param>
         internal static void SetOwnAttribute(this Element element, String name, String value, Boolean suppressCallbacks = false)
         {
-            element.Attributes.SetNamedItemWithNamespaceUri(new Attr(name, value), suppressCallbacks);
+            element.Attributes.SetNamedItemWithNamespaceUri(new Attr(new LazyString( name ), new LazyString( value )), suppressCallbacks);
         }
 
         private static IDocumentFragment CreateFragment(this IElement context, String html)

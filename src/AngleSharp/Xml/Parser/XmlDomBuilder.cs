@@ -428,7 +428,7 @@
                 return new Attr(prefix, name.Substring(colon + 1), value, ns);
             }
 
-            return new Attr(name, value);
+            return new Attr(new LazyString( name ), new LazyString( value ));
         }
 
         private static Boolean CheckVersion(String ver)

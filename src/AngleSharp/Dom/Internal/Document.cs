@@ -1177,7 +1177,7 @@
             if (!localName.IsXmlName())
                 throw new DomException(DomError.InvalidCharacter);
 
-            return new Attr(localName);
+            return new Attr(new LazyString( localName ));
         }
 
         public IAttr CreateAttribute(String namespaceUri, String qualifiedName)

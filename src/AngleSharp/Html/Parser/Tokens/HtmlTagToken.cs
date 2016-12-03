@@ -11,7 +11,7 @@
     {
         #region Fields
 
-        private readonly List<KeyValuePair<String, String>> _attributes;
+        private readonly List<KeyValuePair<LazyString, LazyString>> _attributes;
 
         private Boolean _selfClosing;
 
@@ -38,7 +38,7 @@
         public HtmlTagToken(HtmlTokenType type, TextPosition position, String name)
             : base(type, position, name)
         {
-            _attributes = new List<KeyValuePair<String, String>>();
+            _attributes = new List<KeyValuePair<LazyString, LazyString>>();
         }
 
         #endregion
@@ -81,7 +81,7 @@
         /// <summary>
         /// Gets the list of attributes.
         /// </summary>
-        public List<KeyValuePair<String, String>> Attributes
+        public List<KeyValuePair<LazyString, LazyString>> Attributes
         {
             get { return _attributes; }
         }
@@ -95,9 +95,9 @@
         /// be set to an empty string.
         /// </summary>
         /// <param name="name">The name of the attribute.</param>
-        public void AddAttribute(String name)
+        public void AddAttribute(LazyString name)
         {
-            _attributes.Add(new KeyValuePair<String, String>(name, String.Empty));
+            _attributes.Add(new KeyValuePair<LazyString, LazyString>(name, LazyString.Empty));
         }
 
         /// <summary>
@@ -105,18 +105,18 @@
         /// </summary>
         /// <param name="name">The name of the attribute.</param>
         /// <param name="value">The value of the attribute.</param>
-        public void AddAttribute(String name, String value)
+        public void AddAttribute(LazyString name, LazyString value)
         {
-            _attributes.Add(new KeyValuePair<String, String>(name, value));
+            _attributes.Add(new KeyValuePair<LazyString, LazyString>(name, value));
         }
 
         /// <summary>
         /// Sets the value of the last added attribute.
         /// </summary>
         /// <param name="value">The value to set.</param>
-        public void SetAttributeValue(String value)
+        public void SetAttributeValue(LazyString value)
         {
-            _attributes[_attributes.Count - 1] = new KeyValuePair<String, String>(_attributes[_attributes.Count - 1].Key, value);
+            _attributes[_attributes.Count - 1] = new KeyValuePair<LazyString, LazyString>(_attributes[_attributes.Count - 1].Key, value);
         }
 
         /// <summary>
@@ -125,15 +125,15 @@
         /// </summary>
         /// <param name="name">The name of the attribute.</param>
         /// <returns>The value of the attribute.</returns>
-        public String GetAttribute(String name)
+        public LazyString GetAttribute(String name)
         {
             for (var i = 0; i != _attributes.Count; i++)
             {
-                if (_attributes[i].Key == name)
+                if (_attributes[i].Key.Equals(name))
                     return _attributes[i].Value;
             }
 
-            return String.Empty;
+            return LazyString.Empty;
         }
 
         #endregion

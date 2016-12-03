@@ -963,7 +963,7 @@
                 AddElement(new HtmlInputElement(_document), tag, acknowledgeSelfClosing: true);
                 CloseCurrentNode();
 
-                if (!tag.GetAttribute(AttributeNames.Type).Isi(AttributeNames.Hidden))
+                if (!tag.GetAttribute(AttributeNames.Type).Equals(AttributeNames.Hidden, StringComparison.OrdinalIgnoreCase))
                 {
                     _frameset = false;
                 }
@@ -1265,7 +1265,7 @@
 
                     if (tag.GetAttribute(AttributeNames.Action).Length > 0)
                     {
-                        _currentFormElement.SetAttribute(AttributeNames.Action, tag.GetAttribute(AttributeNames.Action));
+                        _currentFormElement.SetAttribute(AttributeNames.Action, tag.GetAttribute(AttributeNames.Action).ToString() );
                     }
 
                     InBody(HtmlTagToken.Open(TagNames.Hr));
@@ -1273,7 +1273,7 @@
 
                     if (tag.GetAttribute(AttributeNames.Prompt).Length > 0)
                     {
-                        AddCharacters(tag.GetAttribute(AttributeNames.Prompt));
+                        AddCharacters(tag.GetAttribute(AttributeNames.Prompt).ToString());
                     }
                     else
                     {
@@ -1281,7 +1281,7 @@
                     }
 
                     var input = HtmlTagToken.Open(TagNames.Input);
-                    input.AddAttribute(AttributeNames.Name, TagNames.IsIndex);
+                    input.AddAttribute(new LazyString( AttributeNames.Name ), new LazyString( TagNames.IsIndex ));
 
                     for (var i = 0; i < tag.Attributes.Count; i++)
                     {
@@ -1611,7 +1611,7 @@
                     {
                         var tag = token.AsTag();
 
-                        if (tag.GetAttribute(AttributeNames.Type).Isi(AttributeNames.Hidden))
+                        if (tag.GetAttribute(AttributeNames.Type).Equals(AttributeNames.Hidden, StringComparison.OrdinalIgnoreCase))
                         {
                             RaiseErrorOccurred(HtmlParseError.InputUnexpected, token);
                             AddElement(new HtmlInputElement(_document), tag, true);

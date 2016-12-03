@@ -9,7 +9,7 @@
     /// NamedNodeNap is a key/value pair of nodes that can be accessed by
     /// numeric or string index.
     /// </summary>
-    sealed class NamedNodeMap : INamedNodeMap
+    sealed class NamedNodeMap : INamedNodeMap, IDisposable
     {
         #region Fields
         
@@ -126,6 +126,19 @@
 
         #region Methods
 
+		public IAttr GetNamedItem( LazyString name )
+		{
+			for ( var i = 0; i < _items.Count; i++ )
+			{
+				if ( name.Equals( _items[ i ].Name ) )
+				{
+					return _items[ i ];
+				}
+			}
+
+			return null;
+		}
+
         public IAttr GetNamedItem(String name)
         {
             for (var i = 0; i < _items.Count; i++)
@@ -239,6 +252,12 @@
             return result;
         }
 
+		public void Dispose()
+		{
+			foreach ( var attr in _items )
+				attr.Dispose();
+		}
+
         public IEnumerator<IAttr> GetEnumerator()
         {
             return _items.GetEnumerator();
@@ -273,6 +292,6 @@
             return attr;
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }

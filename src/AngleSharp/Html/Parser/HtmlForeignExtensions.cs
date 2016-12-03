@@ -156,7 +156,7 @@
             {
                 var name = tag.Attributes[i].Key;
                 var value = tag.Attributes[i].Value;
-                element.AdjustAttribute(name.AdjustToMathAttribute(), value);
+                element.AdjustAttribute(name.ToString().AdjustToMathAttribute(), value.ToString());
             }
 
             return element;
@@ -176,7 +176,7 @@
             {
                 var name = tag.Attributes[i].Key;
                 var value = tag.Attributes[i].Value;
-                element.AdjustAttribute(name.AdjustToSvgAttribute(), value);
+                element.AdjustAttribute(name.ToString().AdjustToSvgAttribute(), value.ToString());
             }
 
             return element;

@@ -113,7 +113,7 @@
             var s = new TextSource("<input required>");
             var t = CreateTokenizer(s);
             var token = t.Get();
-            Assert.AreEqual("required", ((HtmlTagToken)token).Attributes[0].Key);
+            Assert.AreEqual("required", ((HtmlTagToken)token).Attributes[0].Key.ToString());
         }
 
         [Test]

@@ -416,7 +416,17 @@
             return node;
         }
 
-        public Boolean HasAttribute(String name)
+		public Boolean HasAttribute( LazyString name )
+		{
+			if ( _namespace.Is( NamespaceNames.HtmlUri ) )
+			{
+				name = new LazyString( name.ToString().HtmlLower() );
+			}
+
+			return _attributes.GetNamedItem( name ) != null;
+		}
+
+		public Boolean HasAttribute(String name)
         {
             if (_namespace.Is(NamespaceNames.HtmlUri))
             {
@@ -735,7 +745,12 @@
 
             element.SetupElement();
         }
-        
-        #endregion
-    }
+
+		#endregion
+
+		protected override void DisposeSelf()
+		{
+			_attributes.Dispose();
+		}
+	}
 }

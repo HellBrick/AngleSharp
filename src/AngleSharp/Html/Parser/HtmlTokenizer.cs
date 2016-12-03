@@ -1707,22 +1707,22 @@
 
                         if (c == Symbols.Equality)
                         {
-                            tag.AddAttribute(FlushBuffer());
+                            tag.AddAttribute(FlushBufferToLazy());
                             state = AttributeState.BeforeValue;
                         }
                         else if (c == Symbols.GreaterThan)
                         {
-                            tag.AddAttribute(FlushBuffer());
+                            tag.AddAttribute( FlushBufferToLazy());
                             return EmitTag(tag);
                         }
                         else if (c.IsSpaceCharacter())
                         {
-                            tag.AddAttribute(FlushBuffer());
+                            tag.AddAttribute( FlushBufferToLazy());
                             state = AttributeState.AfterName;
                         }
                         else if (c == Symbols.Solidus)
                         {
-                            tag.AddAttribute(FlushBuffer());
+                            tag.AddAttribute( FlushBufferToLazy());
                             return TagSelfClosing(tag);
                         }
                         else if (c.IsUppercaseAscii())
@@ -1850,7 +1850,7 @@
 
                         if (c == quote)
                         {
-                            tag.SetAttributeValue(FlushBuffer());
+                            tag.SetAttributeValue( FlushBufferToLazy());
                             state = AttributeState.AfterValue;
                         }
                         else if (c == Symbols.Ampersand)
@@ -1878,12 +1878,12 @@
                     {
                         if (c == Symbols.GreaterThan)
                         {
-                            tag.SetAttributeValue(FlushBuffer());
+                            tag.SetAttributeValue( FlushBufferToLazy());
                             return EmitTag(tag);
                         }
                         else if (c.IsSpaceCharacter())
                         {
-                            tag.SetAttributeValue(FlushBuffer());
+                            tag.SetAttributeValue( FlushBufferToLazy());
                             state = AttributeState.BeforeName;
                         }
                         else if (c == Symbols.Ampersand)

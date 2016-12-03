@@ -6,25 +6,25 @@
     /// <summary>
     /// Represents a generic node attribute.
     /// </summary>
-    sealed class Attr : IAttr
+    sealed class Attr : IAttr, IDisposable
     {
         #region Fields
 
-        private readonly String _localName;
+        private LazyString _localName;
         private readonly String _prefix;
         private readonly String _namespace;
-        private String _value;
+        private LazyString _value;
 
         #endregion
 
         #region ctor
 
-        internal Attr(String localName)
-            : this(localName, String.Empty)
+        internal Attr( LazyString localName )
+             : this( localName, LazyString.Empty )
         {
         }
 
-        internal Attr(String localName, String value)
+        internal Attr( LazyString localName, LazyString value )
         {
             _localName = localName;
             _value = value;
@@ -33,8 +33,8 @@
         internal Attr(String prefix, String localName, String value, String namespaceUri)
         {
             _prefix = prefix;
-            _localName = localName;
-            _value = value;
+            _localName = new LazyString( localName );
+            _value = new LazyString( value );
             _namespace = namespaceUri;
         }
 
@@ -59,33 +59,37 @@
 
         public Boolean IsId
         {
-            get { return _prefix == null && _localName.Isi(AttributeNames.Id); }
+            get { return _prefix == null && _localName.Equals( AttributeNames.Id, StringComparison.OrdinalIgnoreCase ); }
         }
 
         public Boolean Specified
         {
-            get { return !String.IsNullOrEmpty(_value); }
+            get { return !LazyString.IsNullOrEmpty(_value); }
         }
 
         public String Name
         {
-            get { return _prefix == null ? _localName : String.Concat(_prefix, ":", _localName); }
+            get { return _prefix == null ? _localName.ToString() : String.Concat( _prefix, ":", _localName.ToString() ); }
         }
 
         public String Value
         {
-            get { return _value; }
-            set 
-            { 
+            get { return _value.ToString(); }
+            set
+            {
                 var oldValue = _value;
-                _value = value;
-                Container?.RaiseChangedEvent(this, value, oldValue);
+                _value = new LazyString( value );
+
+                if ( Container != null )
+                    Container.RaiseChangedEvent( this, value, oldValue.ToString() );
+                else
+                    oldValue.Dispose();
             }
         }
 
         public String LocalName
         {
-            get { return _localName; }
+            get { return _localName.ToString(); }
         }
 
         public String NamespaceUri
@@ -108,12 +112,18 @@
             var result = 1;
 
             result = result * prime + _localName.GetHashCode();
-            result = result * prime + (_value ?? String.Empty).GetHashCode();
+            result = result * prime + (_value ?? LazyString.Empty).GetHashCode();
             result = result * prime + (_namespace ?? String.Empty).GetHashCode();
             result = result * prime + (_prefix ?? String.Empty).GetHashCode();
 
             return result;
         }
+
+		public void Dispose()
+		{
+			_localName?.Dispose();
+			_value?.Dispose();
+		}
 
         #endregion
     }
