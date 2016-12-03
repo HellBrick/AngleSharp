@@ -143,13 +143,13 @@
         /// Removes all ignorable characters from the beginning.
         /// </summary>
         /// <returns>The trimmed characters.</returns>
-        public String TrimStart()
+        public LazyString TrimStart()
         {
             var i = GetTrimStartIndex();
 
             var t = _name.Substring(0, i);
             _name = _name.Remove(0 ,i);
-            return t.EnsureValue().Value;
+            return t;
         }
 
         /// <summary>
