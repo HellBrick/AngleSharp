@@ -1467,7 +1467,7 @@
                 case HtmlTokenType.Character:
                 {
                     ReconstructFormatting();
-                    AddCharacters(token.Data);
+                    AddCharacters(token.LazyName);
                     _frameset = !token.HasContent && _frameset;
                     return;
                 }
@@ -1519,7 +1519,7 @@
             {
                 case HtmlTokenType.Character:
                 {
-                    AddCharacters(token.Data);
+                    AddCharacters(token.LazyName);
                     return;
                 }
                 case HtmlTokenType.EndTag:
@@ -1704,7 +1704,7 @@
             }
             else
             {
-                AddCharacters(token.Data);
+                AddCharacters(token.LazyName);
             }
         }
 
@@ -2077,7 +2077,7 @@
             {
                 case HtmlTokenType.Character:
                 {
-                    AddCharacters(token.Data);
+                    AddCharacters(token.LazyName);
                     return;
                 }
                 case HtmlTokenType.Comment:

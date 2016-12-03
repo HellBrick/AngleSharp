@@ -153,7 +153,7 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddComment(this Element parent, HtmlToken token)
         {
-            parent.AddNode(new Comment(parent.Owner, token.Data));
+            parent.AddNode(new Comment(parent.Owner, token.LazyName));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
