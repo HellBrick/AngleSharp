@@ -72,6 +72,7 @@
     <Compile Include="Io\BaseRequester.cs" />
     <Compile Include="LegacyExtensions.cs" />
     <Compile Include="SilverlightExtensions.cs" />
+    <Compile Include="Text\LazyString.cs" />
     <Compile Include="Text\StringSource.cs" />
     <Compile Include="Text\StringSourceExtensions.cs" />
     <Compile Include="WeakReference.cs" />
