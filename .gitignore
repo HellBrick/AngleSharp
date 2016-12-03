@@ -58,8 +58,6 @@ local.properties
 *.lock.json
 artifacts/
 
-[Dd]ebug/
-[Rr]elease/
 [Pp]ackages/
 [Tt]ools/
 ![Tt]ools/packages.config
@@ -81,7 +79,6 @@ TestResults/
 *.tlb
 *.tli
 *.tlh
-*.tmp
 *.vspscc
 .builds
 *.dotCover
@@ -181,3 +178,4 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+*.dtt
