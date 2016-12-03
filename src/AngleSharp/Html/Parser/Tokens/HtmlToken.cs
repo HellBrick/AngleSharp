@@ -145,6 +145,15 @@
         /// <returns>The trimmed characters.</returns>
         public String TrimStart()
         {
+            var i = GetTrimStartIndex();
+
+            var t = _name.Substring(0, i);
+            _name = _name.Remove(0 ,i);
+            return t.EnsureValue().Value;
+        }
+
+        private int GetTrimStartIndex()
+        {
             var i = 0;
 
             for (i = 0; i < _name.Length; i++)
@@ -155,9 +164,7 @@
                 }
             }
 
-            var t = _name.Substring(0, i);
-            _name = _name.Remove(0 ,i);
-            return t.EnsureValue().Value;
+            return i;
         }
 
         /// <summary>
