@@ -172,7 +172,9 @@
             return ContentValue.Substring(offset, count);
         }
 
-        public void Append(String value)
+        public void Append(String value) => Append(new LazyString(value));
+
+        internal void Append(LazyString value)
         {
             Replace(_content.Length, 0, value);
         }
@@ -187,7 +189,9 @@
             Replace(offset, count, String.Empty);
         }
 
-        public void Replace(Int32 offset, Int32 count, String data)
+        public void Replace(Int32 offset, Int32 count, String data) => Replace(offset, count, new LazyString(data));
+
+        internal void Replace(Int32 offset, Int32 count, LazyString data)
         {
             var owner = Owner;
             var length = _content.Length;
@@ -203,7 +207,7 @@
             owner.QueueMutation(self => MutationRecord.CharacterData(target: self, previousValue: self.ContentValue), this);
 
             var deleteOffset = offset + data.Length;
-            _content = _content.Insert(offset, data);
+            _content = _content.Insert(offset, data.EnsureValue().Value);
 
             if (count > 0)
             {

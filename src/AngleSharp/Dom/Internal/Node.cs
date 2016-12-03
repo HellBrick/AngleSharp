@@ -255,7 +255,9 @@
 
         #region Internal Methods
 
-        internal void AppendText(String s)
+        internal void AppendText(String s) => AppendText(new LazyString(s));
+
+        internal void AppendText(LazyString s)
         {
             var lastChild = LastChild as TextNode;
 

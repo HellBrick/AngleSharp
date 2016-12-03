@@ -3923,9 +3923,15 @@
         /// Inserts the given characters into the current node.
         /// </summary>
         /// <param name="text">The characters to insert.</param>
-        private void AddCharacters(String text)
+        private void AddCharacters(String text) => AddCharacters(new LazyString(text));
+
+        /// <summary>
+        /// Inserts the given characters into the current node.
+        /// </summary>
+        /// <param name="text">The characters to insert.</param>
+        private void AddCharacters(LazyString text)
         {
-            if (!String.IsNullOrEmpty(text))
+            if (!text.IsNullOrEmpty)
             {
                 var node = CurrentNode;
 
@@ -3944,7 +3950,7 @@
         /// Inserts the given character into the foster parent.
         /// </summary>
         /// <param name="text">The character to insert.</param>
-        private void AddCharactersWithFoster(String text)
+        private void AddCharactersWithFoster(LazyString text)
         {
             var table = false;
             var index = _openElements.Count;
@@ -3971,7 +3977,7 @@
                 {
                     if (foster.ChildNodes[i] == _openElements[index])
                     {
-                        foster.InsertText(i, text);
+                        foster.InsertText(i, text.EnsureValue().Value);
                         break;
                     }
                 }
