@@ -177,7 +177,7 @@
                 count = length - offset;
             }
             
-            owner.QueueMutation(MutationRecord.CharacterData(target: this, previousValue: _content));
+            owner.QueueMutation(self => MutationRecord.CharacterData(target: self, previousValue: self._content), this);
 
             var deleteOffset = offset + data.Length;
             _content = _content.Insert(offset, data);
