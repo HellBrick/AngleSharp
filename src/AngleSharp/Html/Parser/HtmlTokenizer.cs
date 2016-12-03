@@ -2467,13 +2467,13 @@
 
         private HtmlToken NewCharacter()
         {
-            var content = FlushBuffer();
+            var content = CaptureBuffer();
             return new HtmlToken(HtmlTokenType.Character, _position, content);
         }
 
         private HtmlToken NewComment()
         {
-            var content = FlushBuffer();
+            var content = CaptureBuffer();
             return new HtmlToken(HtmlTokenType.Comment, _position, content);
         }
 
