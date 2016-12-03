@@ -1,5 +1,6 @@
 ﻿namespace AngleSharp.Dom
 {
+    using AngleSharp.Text;
     using System;
     using System.IO;
 
@@ -16,6 +17,11 @@
         }
 
         internal Comment(Document owner, String data)
+            : this(owner, new LazyString(data))
+        {
+        }
+
+        internal Comment(Document owner, LazyString data)
             : base(owner, "#comment", NodeType.Comment, data)
         {
         }

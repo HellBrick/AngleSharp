@@ -17,6 +17,11 @@
         }
 
         internal TextNode(Document owner, String text)
+            : this(owner, new LazyString(text))
+        {
+        }
+
+        internal TextNode(Document owner, LazyString text)
             : base(owner, "#text", NodeType.Text, text)
         {
         }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using Text;
 
     /// <summary>
     /// The base class for all characterdata implementations.
@@ -10,7 +11,7 @@
     {
         #region Fields
 
-        private String _content;
+        private LazyString _content;
 
         #endregion
 
@@ -22,6 +23,11 @@
         }
 
         internal CharacterData(Document owner, String name, NodeType type, String content)
+            : this(owner, name, type, new LazyString(content))
+        {
+        }
+
+        internal CharacterData(Document owner, String name, NodeType type, LazyString content)
             : base(owner, name, type)
         {
             _content = content;
@@ -30,6 +36,8 @@
         #endregion
 
         #region Properties
+
+        private String ContentValue => (_content = _content.EnsureValue()).Value;
 
         public IElement PreviousElementSibling
         {
@@ -95,13 +103,28 @@
                 {
                     if (index >= Length)
                     {
-                        _content = _content.PadRight(index) + value.ToString();
+                        if (_content.HasValue)
+                        {
+                            _content = new LazyString(_content.Value.PadRight(index) + value.ToString());
+                        }
+                        else
+                        {
+                            _content.Builder.Append( ' ', index - Length - 1 );
+                            _content.Builder.Append( value );
+                        }
                     }
                     else
                     {
-                        var chrs = _content.ToCharArray();
-                        chrs[index] = value;
-                        _content = new String(chrs);
+                        if (_content.HasValue)
+                        {
+                            var chrs = _content.Value.ToCharArray();
+                            chrs[index] = value;
+                            _content = new LazyString(new String(chrs));
+                        }
+                        else
+                        {
+                            _content.Builder[ index ] = value;
+                        }
                     }
                 }
             }
@@ -126,7 +149,7 @@
 
         public String Data
         {
-            get { return _content; }
+            get { return ContentValue; }
             set { Replace(0, Length, value); }
         }
 
@@ -143,10 +166,10 @@
 
             if (offset + count > length)
             {
-                return _content.Substring(offset);
+                return ContentValue.Substring(offset);
             }
 
-            return _content.Substring(offset, count);
+            return ContentValue.Substring(offset, count);
         }
 
         public void Append(String value)
@@ -177,7 +200,7 @@
                 count = length - offset;
             }
             
-            owner.QueueMutation(self => MutationRecord.CharacterData(target: self, previousValue: self._content), this);
+            owner.QueueMutation(self => MutationRecord.CharacterData(target: self, previousValue: self.ContentValue), this);
 
             var deleteOffset = offset + data.Length;
             _content = _content.Insert(offset, data);
@@ -195,7 +218,7 @@
         
         public override void ToHtml(TextWriter writer, IMarkupFormatter formatter)
         {
-            writer.Write(formatter.Text(_content));
+            writer.Write(formatter.Text(ContentValue));
         }
 
         public void Before(params INode[] nodes)
