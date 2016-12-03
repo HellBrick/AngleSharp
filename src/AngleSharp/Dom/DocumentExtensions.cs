@@ -114,6 +114,21 @@
         /// Queues a mutation record for the corresponding observers.
         /// </summary>
         /// <param name="document">The document to use.</param>
+        /// <param name="recordFactory">The factory method to create the record if there are any observers.</param>
+        /// <param name="arg">The argument to pass to <paramref name="recordFactory"/>.</param>
+        internal static void QueueMutation<T>(this Document document, Func<T, MutationRecord> recordFactory, T arg)
+        {
+            var observers = document.Mutations.Observers.ToArray();
+            if (observers.Length > 0)
+            {
+                QueueMutation(document, recordFactory(arg), observers);
+            }
+        }
+
+        /// <summary>
+        /// Queues a mutation record for the corresponding observers.
+        /// </summary>
+        /// <param name="document">The document to use.</param>
         /// <param name="record">The record to enqueue.</param>
         internal static void QueueMutation(this Document document, MutationRecord record)
         {
