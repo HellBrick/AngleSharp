@@ -152,6 +152,15 @@
             return t.EnsureValue().Value;
         }
 
+        /// <summary>
+        /// Removes all ignorable characters from the beginning without returning them.
+        /// </summary>
+        public void TrimStartWithoutReturn()
+        {
+            var i = GetTrimStartIndex();
+            _name = _name.Remove(0 ,i);
+        }
+
         private int GetTrimStartIndex()
         {
             var i = 0;

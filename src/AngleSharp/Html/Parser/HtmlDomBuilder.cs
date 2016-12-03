@@ -415,7 +415,7 @@
                 }
                 case HtmlTokenType.Character:
                 {
-                    token.TrimStart();
+                    token.TrimStartWithoutReturn();
 
                     if (!token.IsEmpty)
                     {
@@ -451,7 +451,7 @@
             {
                 case HtmlTokenType.Character:
                 {
-                    token.TrimStart();
+                    token.TrimStartWithoutReturn();
 
                     if (!token.IsEmpty)
                     {
@@ -507,7 +507,7 @@
             {
                 case HtmlTokenType.Character:
                 {
-                    token.TrimStart();
+                    token.TrimStartWithoutReturn();
 
                     if (!token.IsEmpty)
                     {
